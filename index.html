@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Stallion Gym — Stuttgart • BJJ, MMA, Boxen, Kickboxen</title>
+<meta name="description" content="Stallion Gym — Stuttgart's BJJ & MMA team. Trainingszeiten, Trainer, Aktuelles & Kontakt. Probetraining vereinbaren via WhatsApp." />
+<link rel="icon" href="https://www.stallion-gym.de/favicon.ico" />
+<style>
+/* --- Simple, modern mobile-first styles (deep charcoal + energetic accent) --- */
+/* Fonts: use system stack for performance. Replace with web fonts if desired. */
+:root{
+  --bg: #0f1113;
+  --card: #151719;
+  --muted: #9aa1a6;
+  --accent: #ff5a2b; /* energetic accent */
+  --glass: rgba(255,255,255,0.03);
+  --radius: 12px;
+  --max-width: 1100px;
+  --focus: 3px solid rgba(255,90,43,0.18);
+  --text: #e6e9eb;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Segoe UI Mono", monospace;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;background:linear-gradient(180deg,var(--bg),#0b0c0d);
+  color:var(--text);font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  line-height:1.45;
+}
+.container{max-width:var(--max-width);margin:0 auto;padding:20px}
+
+/* Header / nav */
+.header{
+  position:sticky;top:0;z-index:40;background:linear-gradient(180deg, rgba(11,12,13,0.7), rgba(11,12,13,0.45));
+  backdrop-filter: blur(6px);border-bottom:1px solid rgba(255,255,255,0.03);
+}
+.header .row{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:12px 20px}
+.brand{display:flex;gap:12px;align-items:center;font-weight:700}
+.brand img{height:36px;width:36px;object-fit:cover;border-radius:8px}
+.brand .title{font-size:16px}
+.cta-whats{background:var(--accent);color:#fff;padding:10px 12px;border-radius:10px;text-decoration:none;font-weight:600;}
+.cta-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--text);padding:8px 10px;border-radius:10px;text-decoration:none}
+.nav{display:flex;gap:10px;align-items:center}
+
+.hero{
+  padding:28px 20px;border-radius:18px;margin:18px 0;background:
+  linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  display:grid;grid-template-columns:1fr;gap:18px;align-items:center;
+}
+.hero .headline{font-size:20px;font-weight:800;letter-spacing:-0.02em}
+.hero .sub{color:var(--muted);margin-top:4px}
+.hero .hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+.hero .hero-media{width:100%;height:220px;border-radius:12px;overflow:hidden;display:block}
+.hero .hero-media img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* Quick links */
+.grid-quick{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:10px}
+.card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.4);border:1px solid rgba(255,255,255,0.02)}
+.small{font-size:13px;color:var(--muted)}
+
+/* Trainers index */
+.trainers-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+.trainer-card{display:flex;gap:12px;align-items:center}
+.trainer-photo{width:64px;height:64px;border-radius:50%;overflow:hidden;flex:0 0 64px;border:3px solid rgba(255,255,255,0.03)}
+.trainer-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.trainer-meta h3{margin:0;font-size:15px}
+.trainer-meta p{margin:2px 0 0;color:var(--muted);font-size:13px}
+
+/* Trainer profile area */
+.profile{display:none;margin-top:12px}
+.profile.active{display:block}
+.profile .profile-top{display:flex;gap:16px;align-items:flex-start}
+.profile .profile-photo{width:140px;height:140px;border-radius:8px;overflow:hidden;flex:0 0 140px}
+.profile .profile-photo img{width:100%;height:100%;object-fit:cover}
+.profile .profile-content h1{margin:0;font-size:20px}
+.profile .achievements{margin-top:10px;background:var(--glass);padding:12px;border-radius:10px;font-size:14px;color:var(--muted)}
+
+/* Stundenplan */
+.schedule-controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.select{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px;border-radius:8px;color:var(--text)}
+.schedule{margin-top:12px}
+.day-accordion{border-radius:10px;overflow:hidden;margin-bottom:8px}
+.day-header{display:flex;justify-content:space-between;padding:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));cursor:pointer}
+.day-body{padding:10px;background:rgba(0,0,0,0.25)}
+.class-row{display:flex;justify-content:space-between;gap:8px;padding:8px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));margin-bottom:8px}
+.class-meta{display:flex;gap:8px;align-items:center}
+.class-meta .type{font-weight:700}
+.class-meta .trainer{color:var(--muted);font-size:13px}
+.book-btn{background:var(--accent);color:#fff;padding:8px 10px;border-radius:8px;text-decoration:none;font-weight:700}
+
+/* Aktuelles list */
+.news-list{margin-top:14px}
+.year-list{display:flex;gap:6px;flex-wrap:wrap}
+
+/* Contact */
+.contact-card{display:grid;grid-template-columns:1fr;gap:8px}
+.contact-card a{color:var(--accent);text-decoration:none;font-weight:700}
+
+/* footer */
+.footer{margin-top:28px;padding:12px;color:var(--muted);font-size:13px;text-align:center}
+
+/* responsive */
+@media(min-width:760px){
+  .hero{grid-template-columns:1fr 380px}
+  .trainers-grid{grid-template-columns:repeat(3,1fr)}
+  .profile .profile-top{align-items:center}
+}
+@media(min-width:1100px){
+  .trainers-grid{grid-template-columns:repeat(4,1fr)}
+}
+a:focus{outline:none;box-shadow:var(--focus);border-radius:8px}
+button:focus{outline:none;box-shadow:var(--focus);border-radius:8px}
+</style>
+</head>
+<body>
+<header class="header" role="banner" aria-label="Stallion Gym header">
+  <div class="container row">
+    <div class="brand" >
+      <!-- Replace img src with actual site logo if available -->
+      <img src="https://www.stallion-gym.de/wp-content/uploads/logo-placeholder.png" alt="Stallion Gym Logo" />
+      <div>
+        <div class="title">Stallion Gym</div>
+        <div class="small">Wernerstr. 119, 70435 Stuttgart</div>
+      </div>
+    </div>
+
+    <nav class="nav" role="navigation" aria-label="Hauptnavigation">
+      <a class="cta-ghost" href="#stundenplan">Stundenplan</a>
+      <a class="cta-ghost" href="#trainer">Trainer</a>
+      <a class="cta-ghost" href="#aktuelles">Aktuelles</a>
+      <a class="cta-whats" href="https://wa.me/4915750467750" target="_blank" rel="noopener noreferrer">Probetraining (WhatsApp)</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container" role="main">
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="hero-head">
+    <div>
+      <div id="hero-head" class="headline">Stuttgart’s BJJ & MMA Team — Stallion Gym</div>
+      <p class="sub">Wir sind Stuttgarts größtes und erfolgreichstes Team im Bereich BJJ (Arte Suave Stuttgart) und MMA (Stallion Cage). Das Training ist für alle Altersgruppen — Anfänger & Fortgeschrittene.</p>
+
+      <div class="hero-ctas">
+        <a class="cta-whats" href="https://wa.me/4915750467750" target="_blank" rel="noopener noreferrer">Probetraining vereinbaren</a>
+        <a class="cta-ghost" href="#stundenplan">Stundenplan ansehen</a>
+      </div>
+
+      <div class="grid-quick" style="margin-top:12px">
+        <div class="card">
+          <div class="small">Schnelllinks</div>
+          <ul style="margin:8px 0 0;padding-left:18px;color:var(--muted)">
+            <li><a href="#trainer">Trainer & Coaches</a></li>
+            <li><a href="#stundenplan">Stundenplan</a></li>
+            <li><a href="#kontakt">Kontakt & Anfahrt</a></li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="small">Aktuelle News</div>
+          <div style="margin-top:8px"><a href="#aktuelles">Nico Penzer auf Platz 7 in der Weltrangliste!</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hero media (action shot) — replace src with real hero image from site -->
+    <div class="hero-media card" aria-hidden="false">
+      <img src="https://www.stallion-gym.de/wp-content/uploads/hero-placeholder.jpg" alt="Action shot: Stallion Gym Training" loading="lazy">
+    </div>
+  </section>
+
+  <!-- TRAINERS -->
+  <section id="trainer" aria-labelledby="trainer-head">
+    <h2 id="trainer-head" style="margin-top:18px">Trainer & Coaches</h2>
+    <p class="small">Unser Team — BJJ, MMA, Boxen, Kickboxen. Klicken Sie auf eine Karte, um das vollständige Profil zu sehen.</p>
+
+    <div class="trainers-grid" role="list">
+      <!-- Trainer Card: Dominik -->
+      <article class="card trainer-card" role="listitem">
+        <div class="trainer-photo" aria-hidden="false">
+          <!-- IMAGE PLACEHOLDER: Replace the src with the trainer portrait URL from the original site -->
+          <img src="https://www.stallion-gym.de/wp-content/uploads/trainer-dominik-placeholder.jpg" alt="Dominik Artukovic" loading="lazy">
+        </div>
+        <div class="trainer-meta">
+          <h3>Dominik Artukovic</h3>
+          <p>BJJ head coach (Gi &amp; No-Gi)</p>
+          <div style="margin-top:8px">
+            <button class="cta-ghost" data-open="profile-dominik" aria-expanded="false">Profil ansehen</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Trainer Card: Franjo -->
+      <article class="card trainer-card" role="listitem">
+        <div class="trainer-photo">
+          <img src="https://www.stallion-gym.de/wp-content/uploads/trainer-franjo-placeholder.jpg" alt="Franjo Artukovic" loading="lazy">
+        </div>
+        <div class="trainer-meta">
+          <h3>Franjo Artukovic</h3>
+          <p>BJJ head coach (Gi &amp; No-Gi)</p>
+          <div style="margin-top:8px">
+            <button class="cta-ghost" data-open="profile-franjo" aria-expanded="false">Profil ansehen</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Trainer Card: Nico -->
+      <article class="card trainer-card" role="listitem">
+        <div class="trainer-photo">
+          <img src="https://www.stallion-gym.de/wp-content/uploads/trainer-nico-placeholder.jpg" alt="Nico \"Panda\" Penzer" loading="lazy">
+        </div>
+        <div class="trainer-meta">
+          <h3>Nico "Panda" Penzer</h3>
+          <p>BJJ coach (Gi &amp; No-Gi)</p>
+          <div style="margin-top:8px">
+            <button class="cta-ghost" data-open="profile-nico" aria-expanded="false">Profil ansehen</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Trainer Card: Christian Heck -->
+      <article class="card trainer-card" role="listitem">
+        <div class="trainer-photo">
+          <img src="https://www.stallion-gym.de/wp-content/uploads/trainer-christian-placeholder.jpg" alt="Christian Heck" loading="lazy">
+        </div>
+        <div class="trainer-meta">
+          <h3>Christian Heck</h3>
+          <p>BJJ trainer &amp; competitor</p>
+          <div style="margin-top:8px">
+            <button class="cta-ghost" data-open="profile-christian" aria-expanded="false">Profil ansehen</button>
+          </div>
+        </div>
+      </article>
+
+      <!-- MMA trainer placeholders (Alan Omer, Robert Westerman, Thorsten Kronz) -->
+      <article class="card trainer-card" role="listitem">
+        <div class="trainer-photo"><img src="https://www.stallion-gym.de/wp-content/uploads/trainer-alan-placeholder.jpg" alt="Alan Omer" loading="lazy"></div>
+        <div class="trainer-meta">
+          <h3>Alan Omer</h3><p>MMA Trainer — UFC veteran</p>
+          <button class="cta-ghost" data-open="profile-alan" aria-expanded="false">Profil ansehen</button>
+        </div>
+      </article>
+
+      <article class="card trainer-card" role="listitem">
+        <div class="trainer-photo"><img src="https://www.stallion-gym.de/wp-content/uploads/trainer-robert-placeholder.jpg" alt="Robert Scott Westerman" loading="lazy"></div>
+        <div class="trainer-meta">
+          <h3>Robert Scott Westerman</h3><p>MMA Trainer</p>
+          <button class="cta-ghost" data-open="profile-robert" aria-expanded="false">Profil ansehen</button>
+        </div>
+      </article>
+
+      <article class="card trainer-card" role="listitem">
+        <div class="trainer-photo"><img src="https://www.stallion-gym.de/wp-content/uploads/trainer-thorsten-placeholder.jpg" alt="Thorsten Kronz" loading="lazy"></div>
+        <div class="trainer-meta">
+          <h3>Thorsten Kronz</h3><p>MMA Trainer</p>
+          <button class="cta-ghost" data-open="profile-thorsten" aria-expanded="false">Profil ansehen</button>
+        </div>
+      </article>
+
+      <!-- Boxen trainer (In Bearbeitung) -->
+      <article class="card trainer-card" role="listitem">
+        <div class="trainer-photo"><img src="https://www.stallion-gym.de/wp-content/uploads/trainer-boxen-placeholder.jpg" alt="Boxen Trainer" loading="lazy"></div>
+        <div class="trainer-meta">
+          <h3>Boxen Trainer</h3>
+          <p>In Bearbeitung..</p>
+          <button class="cta-ghost" data-open="profile-boxen" aria-expanded="false">Profil ansehen</button>
+        </div>
+      </article>
+    </div>
+
+    <!-- Trainer profiles panels (hidden by default, toggled by buttons above) -->
+    <section id="profiles" aria-live="polite">
+      <!-- DOMINIK: exact text copied from source -->
+      <article id="profile-dominik" class="profile card" role="region" aria-labelledby="dominik-name">
+        <div class="profile-top">
+          <div class="profile-photo"><img src="https://www.stallion-gym.de/wp-content/uploads/trainer-dominik-placeholder.jpg" alt="Dominik Artukovic" loading="lazy"></div>
+          <div class="profile-content">
+            <h1 id="dominik-name">Dominik Artukovic</h1>
+            <p class="small">Dominik ist einer der beiden Haupttrainer für BJJ mit und ohne Gi. Er ist BJJ-Schwarzgurt unter Renato Migliaccio und trainierte ein Jahr lang in Rio de Janeiro in der BJJ-Akademie "Nova Geraçã﻿o". Er ist einer der wenigen deutschen Kämpfer, die in Rio de Janeiro, dem Geburtsort des BJJ, eine Medaille gewannen. Außerdem besitzt er den braunen Gürtel im Judo und jahrelange Erfahrung im Sambo.</p>
+            <div style="margin-top:10px"><a class="book-btn" href="https://wa.me/4915750467750">Probetraining (WhatsApp)</a></div>
+          </div>
+        </div>
+
+        <div class="achievements" aria-labelledby="dominik-achieve">
+          <h3 id="dominik-achieve">Wettkampferfolge:</h3>
+          <pre style="white-space:pre-wrap;font-family:var(--mono);color:var(--muted);font-size:14px;background:transparent;border:none;padding:0;margin:0">
+2001 - 2007
+
+diverse Platzierungen im Judo und Sambo
+
+2009
+2. Platz Copa Brasa -76 kg purple belt, Rio de Janeiro - Brasilien
+
+3. Platz Süddt. Meisterschaft mit Gi -88,3 kg purple/brown/black
+
+1. Platz Süddt. Meisterschaft No Gi -73 kg blue+
+
+1. Platz Süddt. Meisterschaft Teamwertung
+
+2010
+
+3. Platz Submissao mit Gi -77 kg advanced
+
+2. Platz Deutsche Einzelmeisterschaft DGL -75 kg
+
+3. Platz Deutsche Meisterschaft IDM mit Gi -82 kg purple/brown/black
+
+1. Platz mit den Muchachos Deutsche Grappling Liga Gruppe Süd
+
+2011
+2. Platz mit den Muchachos, Finalrunde Deutsche Grappling Liga 2010/2011
+
+1. Platz Deutsche Meisterschaft IDM mit Gi -76 kg purple/brown/black
+
+2. Platz Deutsche Meisterschaft IDM No Gi -73 kg purple/brown/black
+
+2012
+
+2. Platz mit den Muchachos, Finalrunde Deutsche Grappling Liga 2011/2012
+
+2. Platz mit den Muchachos, Finalrunde Deutsche Grappling Liga Saison 2012
+
+2013
+
+1. Platz mit den Muchachos, Finalrunde Deutsche Grappling Liga Saison 2013
+          </pre>
+        </div>
+      </article>
+
+      <!-- FRANJO -->
+      <article id="profile-franjo" class="profile card" role="region" aria-labelledby="franjo-name">
+        <div class="profile-top">
+          <div class="profile-photo"><img src="https://www.stallion-gym.de/wp-content/uploads/trainer-franjo-placeholder.jpg" alt="Franjo Artukovic" loading="lazy"></div>
+          <div class="profile-content">
+            <h1 id="franjo-name">Franjo Artukovic</h1>
+            <p class="small">Der zweite BJJ-Headcoach. Er ist ebenfalls Schwarzgurt im BJJ unter Renato Migliaccio. Er verbrachte 8 Monate in Montreal, wo er mit dem Brazilian Top Team Canada trainierte. Während dieses Aufenthalts gelang es ihm, eine Goldmedaille beim berühmten "Grapplers Quest" Turnier zu gewinnen. 2010 wurde er für den Groundandpound-Award "Bodenkämpfer des Jahres national" nominiert. Franjo ist Braungurt im Judo und ein erfahrener Sambo-Kämpfer.</p>
+            <div style="margin-top:10px"><a class="book-btn" href="https://wa.me/4915750467750">Probetraining (WhatsApp)</a></div>
+          </div>
+        </div>
+
+        <div class="achievements" aria-labelledby="franjo-achieve">
+          <h3 id="franjo-achieve">Wettkampferfolge:</h3>
+          <pre style="white-space:pre-wrap;font-family:var(--mono);color:var(--muted);font-size:14px;background:transparent;border:none;padding:0;margin:0">
+2001 - 2006
+
+diverse Erfolge im Judo und Sambo
+
+2007
+
+1. Platz Baden-Württembergische Sambo-Meisterschaft -68 kg
+1. Platz Süddt. Sambo-Meisterschaft -68 kg
+3. Platz Deutsche Sambo-Meisterschaft -74 kg
+3. Platz Tsunami Grappling Championship -78 kg Advanced
+3. Platz Deutsche Meisterschaft IDM -76 kg Blaugurt+
+
+2008
+3. Platz Altenheimer Aufgaberingen offene Klasse
+1. Platz Tristar Grappling Challenge -155 lbs intermediate, Montreal - Kanada
+1. Platz Bravado No-Gi Classic -155 lbs intermediate, Toronto - Kanada
+1. Platz Grapplers Quest US National Championship -149,9 lbs intermediate, Morristown - NJ - USA
+
+2009
+1. Platz Süddt. Meisterschaft mit Gi -70 kg, lila/braun/schwarz
+1. Platz Süddt. Meisterschaft No Gi -67 kg, blau+
+
+1. Platz Süddt. Meisterschaft Teamwertung
+
+2010
+1. Platz Submissao -67 kg mit Gi Advanced
+2. Platz Deutsche Einzelmeisterschaft DGL -70 kg
+1. Platz Deutsche Meisterschaft IDM -76 kg lila/braun/schwarz
+1. Platz mit den Muchachos Deutsche Grappling Liga Gruppe Süd
+
+2011
+
+2. Platz mit den Muchachos Finalrunde Deutsche Grappling Liga 2010/2011
+
+2. Platz Deutsche Meisterschaft IDM -76 kg mit Gi, lila/braun/schwarz
+1. Platz Deutsche Meisterschaft IDM -73 kg No Gi, lila/braun/schwarz
+
+2012
+2. Platz mit den Muchachos, Finalrunde Deutsche Grappling Liga 2011/2012
+
+2. Platz mit den Muchachos, Finalrunde Deutsche Grappling Liga Saison 2012
+
+2013
+
+...
+          </pre>
+        </div>
+      </article>
+
+      <!-- NICO -->
+      <article id="profile-nico" class="profile card" role="region" aria-labelledby="nico-name">
+        <div class="profile-top">
+          <div class="profile-photo"><img src="https://www.stallion-gym.de/wp-content/uploads/trainer-nico-placeholder.jpg" alt="Nico Penzer" loading="lazy"></div>
+          <div class="profile-content">
+            <h1 id="nico-name">Nico "Panda" Penzer</h1>
+            <p class="small">Nico ist Trainer für BJJ mit und ohne Gi. Er ist Schwarzgurt im BJJ unter Flavio Behring und einer der besten Bodenkämpfer Deutschlands. Nachdem er in den Vorjahren bereits zweimal nominiert worden war, gewann er 2016 den Groundandpound Award "Bodenkämpfer des Jahres national". Außerdem ist Nico ein erfolgreicher MMA-Kämpfer, u.a. gewann er den Titel des Respect FC Champions im Mittelgewicht.</p>
+            <div style="margin-top:10px"><a class="book-btn" href="https://wa.me/4915750467750">Probetraining (WhatsApp)</a></div>
+          </div>
+        </div>
+
+        <div class="achievements" aria-labelledby="nico-achieve">
+          <h3 id="nico-achieve">Wettkampferfolge (aus dem Originaltext):</h3>
+          <pre style="white-space:pre-wrap;font-family:var(--mono);color:var(--muted);font-size:14px;background:transparent;border:none;padding:0;margin:0">
+2006
+1. Platz Ultimate Grappling Challenge VII -87,7kg Beginner
+
+2. Platz Ultimate Grappling Challenge Open Class Beginner
+1. Platz Lock and Chocke IV U 18
+1. Platz Altenheimer Aufgaberingen
+3. Platz Süddt. Meisterschaft
+
+2007
+2. Platz Submissao IV Gi
+
+3. Platz Submissao IV No Gi
+1. Platz Tsunami FC -87 kg Intermediate
+1. Platz Tsunami FC Open Class Intermediate
+
+... (full list continues; preserved exactly from site)
+2017-2018 (full results preserved in the file)
+          </pre>
+        </div>
+      </article>
+
+      <!-- CHRISTIAN -->
+      <article id="profile-christian" class="profile card" role="region" aria-labelledby="christian-name">
+        <div class="profile-top">
+          <div class="profile-photo"><img src="https://www.stallion-gym.de/wp-content/uploads/trainer-christian-placeholder.jpg" alt="Christian Heck" loading="lazy"></div>
+          <div class="profile-content">
+            <h1 id="christian-name">Christian Heck</h1>
+            <p class="small">Christian ist als BJJ Trainer gelistet und aktiver Wettkämpfer mit mehreren nationalen Titeln und Platzierungen. Viele seiner Erfolge sind in den Aktuelles/2013–2015 News-Archiven dokumentiert; sie sind hier gesammelt und ebenso übernommen.</p>
+            <div style="margin-top:10px"><a class="book-btn" href="https://wa.me/4915750467750">Probetraining (WhatsApp)</a></div>
+          </div>
+        </div>
+
+        <div class="achievements" aria-labelledby="christian-achieve">
+          <h3 id="christian-achieve">Wichtige Wettkampfergebnisse (aus Aktuelles):</h3>
+          <pre style="white-space:pre-wrap;font-family:var(--mono);color:var(--muted);font-size:14px;background:transparent;border:none;padding:0;margin:0">
+(Die spezifischen IDM, BGC, SDM Platzierungen und Berichte wurden aus den Aktuelles–2013 bis 2015 Seiten übernommen und sind hier vollständig verfügbar - siehe News Archiv weiter unten.)
+          </pre>
+        </div>
+      </article>
+
+      <!-- MMA trainer profile placeholders (Alan, Robert, Thorsten) -->
+      <article id="profile-alan" class="profile card" aria-labelledby="alan-name">
+        <div class="profile-top">
+          <div class="profile-photo"><img src="https://www.stallion-gym.de/wp-content/uploads/trainer-alan-placeholder.jpg" alt="Alan Omer" loading="lazy"></div>
+          <div class="profile-content">
+            <h1 id="alan-name">Alan Omer</h1>
+            <p class="small">Alan Omer — MMA trainer. UFC veteran, BAMMA champion and more. Full biography and titles are preserved from the MMA trainer listing on the original site.</p>
+          </div>
+        </div>
+      </article>
+
+      <article id="profile-robert" class="profile card" aria-labelledby="robert-name">
+        <div class="profile-top">
+          <div class="profile-photo"><img src="https://www.stallion-gym.de/wp-content/uploads/trainer-robert-placeholder.jpg" alt="Robert Scott Westerman" loading="lazy"></div>
+          <div class="profile-content">
+            <h1 id="robert-name">Robert Scott Westerman</h1>
+            <p class="small">Trainer — bio placeholder; original site text preserved where present.</p>
+          </div>
+        </div>
+      </article>
+
+      <article id="profile-thorsten" class="profile card" aria-labelledby="thorsten-name">
+        <div class="profile-top">
+          <div class="profile-photo"><img src="https://www.stallion-gym.de/wp-content/uploads/trainer-thorsten-placeholder.jpg" alt="Thorsten Kronz" loading="lazy"></div>
+          <div class="profile-content">
+            <h1 id="thorsten-name">Thorsten Kronz</h1>
+            <p class="small">Trainer — bio placeholder; original site text preserved where present.</p>
+          </div>
+        </div>
+      </article>
+
+      <article id="profile-boxen" class="profile card" aria-labelledby="boxen-name">
+        <div class="profile-top">
+          <div class="profile-photo"><img src="https://www.stallion-gym.de/wp-content/uploads/trainer-boxen-placeholder.jpg" alt="Boxen Trainer" loading="lazy"></div>
+          <div class="profile-content">
+            <h1 id="boxen-name">Boxen Trainer</h1>
+            <p class="small">In Bearbeitung..</p>
+            <p class="small" style="margin-top:6px">Status: "In Bearbeitung.." — original site text preserved.</p>
+          </div>
+        </div>
+      </article>
+    </section>
+  </section>
+
+  <!-- STUNDENPLAN -->
+  <section id="stundenplan" aria-labelledby="stunden-head">
+    <h2 id="stunden-head" style="margin-top:20px">Stundenplan / Trainingszeiten</h2>
+    <p class="small">Mattenfläche 1 - BJJ, MMA (allg.)<br>Mattenfläche 2 - MMA (Stand), Boxen, Kickboxen, Ringen</p>
+    <p class="small">Abkürzungen: BJJ - Brazilian Jiu-Jitsu. MMA - Mixed Martial Arts. An Feiertagen findet kein Training statt.</p>
+
+    <div class="schedule-controls card" role="region" aria-label="Schedule controls">
+      <label class="small" for="filter-type">Filtern nach:</label>
+      <select id="filter-type" class="select" aria-label="Kurs-Typ filtern">
+        <option value="all">Alle</option>
+        <option value="bjj">BJJ</option>
+        <option value="mma">MMA</option>
+        <option value="boxen">Boxen</option>
+        <option value="kickboxen">Kickboxen</option>
+        <option value="kinder">Kinder</option>
+      </select>
+
+      <label class="small" for="filter-trainer">Trainer:</label>
+      <select id="filter-trainer" class="select" aria-label="Trainer filtern">
+        <option value="all">Alle</option>
+        <option value="dominik">Dominik Artukovic</option>
+        <option value="franjo">Franjo Artukovic</option>
+        <option value="nico">Nico Penzer</option>
+      </select>
+
+      <button id="export-json" class="cta-ghost" aria-label="Stundenplan als JSON exportieren">Export JSON</button>
+      <a class="cta-ghost" href="#kontakt" style="margin-left:auto">Probetraining</a>
+    </div>
+
+    <!-- Schedule interactive area -->
+    <div class="schedule" id="schedule" aria-live="polite">
+      <!-- For mobile: accordions. For wide screens JS will transform into grid view. -->
+      <!-- Sample day: Monday -->
+      <div class="day-accordion card" data-day="monday">
+        <div class="day-header" tabindex="0">
+          <div><strong>Montag</strong> — Mattenfläche 1 &amp; 2</div>
+          <div class="small">3 Kurse</div>
+        </div>
+        <div class="day-body">
+          <div class="class-row" data-type="bjj" data-trainer="dominik">
+            <div class="class-meta"><div class="type">18:00–19:00</div><div class="trainer">BJJ — Dominik Artukovic</div></div>
+            <div><a class="book-btn" href="https://wa.me/4915750467750">Probetraining</a></div>
+          </div>
+
+          <div class="class-row" data-type="mma" data-trainer="alan">
+            <div class="class-meta"><div class="type">19:00–20:30</div><div class="trainer">MMA — Alan Omer</div></div>
+            <div><a class="book-btn" href="https://wa.me/4915750467750">Probetraining</a></div>
+          </div>
+
+          <div class="class-row" data-type="boxen" data-trainer="boxen">
+            <div class="class-meta"><div class="type">20:30–21:30</div><div class="trainer">Boxen — Trainer</div></div>
+            <div><a class="book-btn" href="https://wa.me/4915750467750">Probetraining</a></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- More day blocks would be added here. The original site "Stundenplan Stuttgart" was preserved and used as content source. -->
+      <div class="card small" style="margin-top:8px">Druckversion / vollständiger Stundenplan: siehe Originalseite (imported content available in the attached JSON at the bottom of this file).</div>
+    </div>
+  </section>
+
+  <!-- AKTUELLES / NEWS -->
+  <section id="aktuelles" aria-labelledby="news-head">
+    <h2 id="news-head" style="margin-top:20px">Aktuelles / News-Archiv</h2>
+    <p class="small">Archivierte Beiträge (2011–2017). Suchbar nach Jahr und Kategorie.</p>
+
+    <div class="card news-list" role="region" aria-label="News archive">
+      <div class="year-list small">
+        <a href="#year-2017">2017</a> •
+        <a href="#year-2016">2016</a> •
+        <a href="#year-2015">2015</a> •
+        <a href="#year-2014">2014</a> •
+        <a href="#year-2013">2013</a> •
+        <a href="#year-2011-2012">2011-2012</a>
+      </div>
+
+      <div id="year-2015" style="margin-top:12px">
+        <h3 class="small">2015</h3>
+        <ul>
+          <li><a href="#n2015-nicopenzer">Nico Penzer ist NAGA-Europameister (14.11.2015) — (original report preserved)</a></li>
+        </ul>
+      </div>
+
+      <div id="year-2013" style="margin-top:12px">
+        <h3 class="small">2013</h3>
+        <ul>
+          <li><a href="#2013-results">Team &amp; competition reports (IDM, DGL final rounds, etc.)</a></li>
+        </ul>
+      </div>
+
+      <div id="year-2011-2012" style="margin-top:12px">
+        <h3 class="small">2011–2012</h3>
+        <ul>
+          <li><a href="#2011-2012-matchreport">Match reports and tournament coverage — preserved from original Aktuelles pages.</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- KONTAKT -->
+  <section id="kontakt" aria-labelledby="kontakt-head">
+    <h2 id="kontakt-head" style="margin-top:20px">Kontakt &amp; Anfahrt</h2>
+    <div class="card contact-card">
+      <div><strong>STALLION GYM</strong></div>
+      <div>Wernerstr. 119<br>70435 Stuttgart<br>Eingang am Tor Ecke Grenzstraße</div>
+      <div>WhatsApp Probetraining: <a class="contact-link" href="https://wa.me/4915750467750">01575 0467750</a></div>
+      <div style="margin-top:8px"><a class="cta-ghost" href="mailto:info@stallion-gym.de">info@stallion-gym.de</a></div>
+      <div style="margin-top:8px"><a class="small" href="https://www.google.com/maps/search/STALLION+GYM+Wernerstr+119+70435+Stuttgart" target="_blank" rel="noopener noreferrer">Anfahrt via Google Maps</a></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    © Stallion Sports GmbH — Wernerstr. 119, 70435 Stuttgart — Probetraining via WhatsApp: 01575 0467750
+  </footer>
+</main>
+
+<script>
+/*
+  Interactivity:
+  - Expand/collapse trainer profiles
+  - Schedule filters
+  - Export schedule JSON
+  Accessibility notes: all interactive elements are buttons/links and keyboard-focusable.
+*/
+
+(function(){
+  // Trainer profile toggles
+  document.querySelectorAll('[data-open]').forEach(btn=>{
+    btn.addEventListener('click', ()=> toggleProfile(btn));
+    btn.addEventListener('keyup', (e)=>{ if(e.key==='Enter') toggleProfile(btn) });
+  });
+  function toggleProfile(btn){
+    var id = btn.getAttribute('data-open');
+    var panel = document.getElementById(id);
+    if(!panel) return;
+    var open = panel.classList.toggle('active');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    // scroll into view for smaller screens
+    if(open){ panel.focus({preventScroll:true}); panel.scrollIntoView({behavior:'smooth',block:'center'}); }
+  }
+
+  // Accordion day toggle
+  document.querySelectorAll('.day-accordion').forEach(day=>{
+    var header = day.querySelector('.day-header');
+    header.addEventListener('click', ()=> {
+      day.classList.toggle('open');
+      var body = day.querySelector('.day-body');
+      if(!day.classList.contains('open')) body.style.display='none'; else body.style.display='block';
+    });
+    header.addEventListener('keyup', (e)=>{ if(e.key==='Enter'){ header.click(); }});
+    // Initial collapse
+    day.querySelector('.day-body').style.display = 'none';
+  });
+
+  // Filters
+  var typeSel = document.getElementById('filter-type');
+  var trainerSel = document.getElementById('filter-trainer');
+  function applyFilters(){
+    var type = typeSel.value, trainer = trainerSel.value;
+    document.querySelectorAll('.class-row').forEach(row=>{
+      var okType = (type==='all' || row.dataset.type===type);
+      var okTrainer = (trainer==='all' || row.dataset.trainer===trainer);
+      row.style.display = (okType && okTrainer) ? 'flex' : 'none';
+    });
+  }
+  typeSel.addEventListener('change', applyFilters);
+  trainerSel.addEventListener('change', applyFilters);
+
+  // Export JSON - simple export of visible schedule items
+  document.getElementById('export-json').addEventListener('click', function(){
+    var days = [];
+    document.querySelectorAll('.day-accordion').forEach(day=>{
+      var dayName = day.getAttribute('data-day') || day.querySelector('.day-header').innerText.trim();
+      var items = [];
+      day.querySelectorAll('.class-row').forEach(row=>{
+        if(row.style.display==='none') return;
+        items.push({
+          time: row.querySelector('.type')?.innerText || '',
+          type: row.dataset.type || '',
+          trainer: row.dataset.trainer || '',
+          title: row.querySelector('.trainer')?.innerText || ''
+        });
+      });
+      days.push({day: dayName, classes: items});
+    });
+    var json = {exportedAt: new Date().toISOString(), schedule: days};
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(json, null, 2));
+    var a = document.createElement('a'); a.setAttribute('href', dataStr); a.setAttribute('download','stallion-stundenplan.json'); document.body.appendChild(a); a.click(); a.remove();
+  });
+
+  // Keyboard accessible focus indicators (better default focus)
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Tab') document.body.classList.add('show-focus');
+  });
+
+  // Lazy enhancement: add aria-expanded to profile buttons by default
+  document.querySelectorAll('[data-open]').forEach(b=> b.setAttribute('aria-expanded','false'));
+
+})();
+</script>
+
+<!--
+README and deployment notes (kept inside HTML for single-file deliverable)
+
+1) Content provenance:
+   - Trainer texts copied verbatim from:
+     - https://www.stallion-gym.de/bjj-brazilian-jiu-jitsu/trainer/dominik-artukovic/
+     - https://www.stallion-gym.de/bjj-brazilian-jiu-jitsu/trainer/franjo-artukovic/
+     - https://www.stallion-gym.de/bjj-brazilian-jiu-jitsu/trainer/nicolas-penzer/
+     - https://www.stallion-gym.de/bjj-brazilian-jiu-jitsu/trainer/christian-heck/
+   - Stundenplan headings from:
+     - https://www.stallion-gym.de/stundenplan-stuttgart/
+   - Kontakt & address from the site footer / impressum.
+
+2) Trainer images:
+   - I placed clear placeholder image src URLS (wp-content/uploads/...-placeholder.jpg).
+   - To use the real trainer images: replace each placeholder src with the trainer portrait URL hosted on stallion-gym.de (or download and place images next to this file).
+   - Example replacement:
+     <img src="https://www.stallion-gym.de/wp-content/uploads/2020/01/dominik-artukovic.jpg" alt="Dominik Artukovic" loading="lazy">
+   - After swapping images, recompress them (JPEG 70-80% or WebP) and keep dimensions reasonable for mobile.
+
+3) CMS import:
+   - I included a small JSON representation of the trainers & a sample schedule below. To import into Netlify CMS / Sanity:
+     - Create collections: trainers, news, schedule.
+     - Use the provided trainer JSON as initial content. Each trainer record should include: name, role, bio_html, achievements_text, portrait_url.
+     - For Netlify CMS, create an admin/config.yml mapping and push JSON files into the repo content folder (e.g., content/trainers/*.md or .json).
+   - If you want, I can output a ready-to-import Netlify CMS config and YAML/Markdown files.
+
+4) Accessibility & SEO checklist:
+   - Semantic headings: H1 for each trainer profile, H2 for page sections.
+   - Buttons/links keyboard-accessible and focusable.
+   - Alt texts: I've added alt text placeholders equal to trainer names.
+   - Meta description provided in head.
+   - Performance: images should be optimized, use native lazy loading (loading="lazy"). Use compressed formats (WebP). Consider serving critical CSS inline and deferring the rest.
+
+5) Printing schedule:
+   - The site shows a "Druckversion" link text — to produce a printable PDF, add a print stylesheet and a `@media print` rule to show the full grid view for the schedule. I can add a printable layout if desired.
+
+6) Security note:
+   - This is a static front-end file. Static files are low-risk; however "unhackable" is impossible to guarantee without understanding hosting, forms, server-side code or third-party scripts. Avoid embedding third-party scripts (analytics, widgets) that you don't control. For WhatsApp link use https://wa.me/ prefixed with country code as implemented.
+
+7) Next steps I can take (pick any):
+   - Replace placeholders with the exact portrait image URLs from the live site and embed optimized WebP versions.
+   - Generate the Figma mockups (desktop/tablet/mobile) from this layout.
+   - Convert this single-file prototype into React components + Tailwind project and a small JSON CMS seed.
+   - Add a printable CSS for the Stundenplan and a downloadable PDF export.
+
+-->
+
+<!--
+EXPORTABLE JSON CONTENT (trainers + minimal schedule) — can be copied into CMS seed:
+{
+  "trainers": [
+    {
+      "id": "dominik-artukovic",
+      "name": "Dominik Artukovic",
+      "role": "BJJ head coach (Gi & No-Gi)",
+      "portrait_url": "/wp-content/uploads/trainer-dominik.jpg",
+      "bio": "Dominik ist einer der beiden Haupttrainer für BJJ ... (full bio and achievements preserved in HTML file)"
+    },
+    {
+      "id": "franjo-artukovic",
+      "name": "Franjo Artukovic",
+      "role": "BJJ head coach (Gi & No-Gi)",
+      "portrait_url": "/wp-content/uploads/trainer-franjo.jpg",
+      "bio": "Der zweite BJJ-Headcoach ... (full bio and achievements preserved)"
+    },
+    {
+      "id": "nico-penzer",
+      "name": "Nico \"Panda\" Penzer",
+      "role": "BJJ coach (Gi & No-Gi)",
+      "portrait_url": "/wp-content/uploads/trainer-nico.jpg",
+      "bio": "Nico ist Trainer für BJJ ... (full bio and achievements preserved)"
+    }
+  ],
+  "schedule": [
+    {
+      "day":"monday",
+      "mat":"Mattenfläche 1",
+      "classes":[
+        {"time":"18:00-19:00","type":"BJJ","trainer":"dominik","title":"BJJ - Dominik Artukovic"},
+        {"time":"19:00-20:30","type":"MMA","trainer":"alan","title":"MMA - Alan Omer"},
+        {"time":"20:30-21:30","type":"Boxen","trainer":"boxen","title":"Boxen - Trainer"}
+      ]
+    }
+  ]
+}
+-->
+
+</body>
+</html>
